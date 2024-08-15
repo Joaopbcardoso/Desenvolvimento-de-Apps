@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, FlatList, Image, Pressable } from "react-native";
 
 const styles = StyleSheet.create({
@@ -47,29 +47,40 @@ const styles = StyleSheet.create({
     item_botao: {
         display: 'flex',
         width: 300,
-        justifyContent: 'space-around'
+        justifyContent: 'space-around',
+        flexDirection: 'row',
+        alignItems: 'center'
     }
 });
 
-const DATA = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      titulo: 'Fazer calculadora2 em React native',
-      feito: false
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      titulo: 'Fazer Lista de Tarefas',
-      feito: false
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      titulo: 'Escolher Músicas Para Tocar Em BC',
-      feito: false
-    },
-];
+const listaTarefa = () => {
+    const [data, setData] = useState([
+        {
+            id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+            titulo: 'Fazer calculadora2 em React native',
+            feito: false
+        },
+        {
+            id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+            titulo: 'Fazer Lista de Tarefas',
+            feito: false
+        },
+        {
+            id: '58694a0f-3da1-471f-bd96-145571e29d72',
+            titulo: 'Escolher Músicas Para Tocar Em BC',
+            feito: false
+        },
+    ]);
 
-export default listaTarefa = () => {
+    const trocaStatus = (itemId) => {
+        // Cria uma nova lista atualizada
+        const newData = data.map(item => 
+            item.id === itemId ? { ...item, feito: !item.feito } : item
+        );
+        // Atualiza o estado com a nova lista
+        setData(newData);
+    };
+
     return (
         <View style={styles.container}>
             <View style={styles.quadro}>
@@ -79,12 +90,21 @@ export default listaTarefa = () => {
                 />
                 <FlatList
                     style={styles.lista}
-                    data={DATA}
+                    data={data}
+                    keyExtractor={item => item.id}
                     renderItem={({ item }) => (
                         <View style={styles.item_botao}>
-                        <Text style={item.feito ? styles.item_concluido : styles.item_a_fazer}>
-                            {item.titulo}
-                        </Text>
+                            <Text style={item.feito ? styles.item_concluido : styles.item_a_fazer}>
+                                {item.titulo}
+                            </Text>
+                            <Pressable
+                                onPress={() => trocaStatus(item.id)} // Chama a função de troca de estado
+                            >
+                                <Image
+                                    style={styles.check}
+                                    source={require('./img/check.png')}
+                                />
+                            </Pressable>
                         </View>
                     )}
                 />
@@ -92,3 +112,5 @@ export default listaTarefa = () => {
         </View>
     );
 };
+
+export default listaTarefa;
