@@ -75,7 +75,7 @@ const listaTarefa = () => {
     const trocaStatus = (itemId) => {
         // Cria uma nova lista atualizada
         const newData = data.map(item => 
-            item.id === itemId ? { ...item, feito: !item.feito } : item
+            item.id === itemId ? !item.feito : item
         );
         // Atualiza o estado com a nova lista
         setData(newData);
