@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     top: 0,
-    bottom: 0, // add this to make the gradient full screen
+    bottom: 0, 
   },
 
   container: {
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   },
   
   logo: {
-    width: 200, // add a width and height to the logo
+    width: 200, 
     height: 200,
   },
 });
