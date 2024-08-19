@@ -5,7 +5,7 @@ export default function HomeScreen() {
   return (
     <View style={styles.container}>
       <LinearGradient 
-        colors={['#43C5D2', '#0A1E2E']}
+        colors={['#0A1E2E','#43C5D2' ]}
         style={styles.background}
       />
       <Image
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   },
   
   logo: {
-    width: 200, 
-    height: 200,
+    width: 250, 
+    height: 250,
   },
 });
