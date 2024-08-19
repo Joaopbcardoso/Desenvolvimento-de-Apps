@@ -1,5 +1,5 @@
 import { View, Image, StyleSheet } from 'react-native';
-import {LinearGradient} from 'expo-linear-gradient'
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function HomeScreen() {
   return (
@@ -9,28 +9,30 @@ export default function HomeScreen() {
         style={styles.background}
       />
       <Image
-      style={styles.logo}
-      source={require('./img/disney.gif')}
+        style={styles.logo}
+        source={require('./img/disney.gif')}
       />
-
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  background : {
+  background: {
     position: 'absolute',
     left: 0,
     right: 0,
     top: 0,
-    height: '300'
+    bottom: 0, // add this to make the gradient full screen
   },
 
-  container:{
+  container: {
     flex: 1,   
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: "#000"
   },
   
+  logo: {
+    width: 200, // add a width and height to the logo
+    height: 200,
+  },
 });
