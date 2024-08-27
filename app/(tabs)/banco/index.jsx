@@ -8,8 +8,8 @@ const App = () => {
     const [operationType, setOperationType] = useState('');
 
     const operacao = (type) => {
-        const multiplier = type === 'sacar' ? 1.025 : 1.01;
-        const valorComMulta = Number(valor) * multiplier;
+        const multaOuBonus = type === 'sacar' ? 1.025 : 1.01;
+        const valorComMulta = Number(valor) * multaOuBonus;
         const novoSaldo = type === 'sacar' ? Number(number) - valorComMulta : Number(number) + valorComMulta;
 
         setNumber(novoSaldo);
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
 
     input: {
         width: 200,
-        marginLeft: 10 
+        marginLeft: 10
     },
 
     options: {
