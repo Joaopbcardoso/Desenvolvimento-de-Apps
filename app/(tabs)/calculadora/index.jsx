@@ -8,7 +8,7 @@ const App = () => {
 
   const soma = () => {
     setResultado(Number(number) + Number(number2));
-  };
+  };  
 
   const subtrai = () => {
     setResultado(Number(number) - Number(number2));
