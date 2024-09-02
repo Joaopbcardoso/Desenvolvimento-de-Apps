@@ -51,7 +51,7 @@ const App = () => {
               transparent={true}
               visible={isModalOpen}
               onRequestClose={() => {
-                Alert.alert('Modal has been closed.');
+                Alert.alert('A modal foi fechada');
                 setIsModalOpen(!isModalOpen);
               }}>
               <View style={styles.centraliza}>
