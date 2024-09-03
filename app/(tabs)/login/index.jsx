@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {View, Text, StyleSheet, TextInput, Pressable, SafeAreaView, Button, Image,} from 'react-native'
+import {View, Text, StyleSheet, TextInput, Pressable, SafeAreaView, Image,} from 'react-native'
 import axios from 'axios';
 import Modal from "react-native-modal";
 
