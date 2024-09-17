@@ -1,44 +1,78 @@
 import HeaderSobre from "../../components/HeaderSobre";
-import { StyleSheet, Image, Text, View} from "react-native";
+import { StyleSheet, Image, Text, View, FlatList } from "react-native";
+import { Link } from "expo-router";
 
-export default function SobreHome(){
-    return(
-        <>
-        <View style={styles.header}>
+export default function SobreHome() {
+
+  const data = [
+    { id: '1', link: './cristo-vive', titulo: 'Cristo Vive!' },
+    { id: '2', link: './viagens', titulo: 'Viagens' }
+  ];
+  
+  return (
+    <>
+        <View style={styles.container}>
             <HeaderSobre
-            style={styles.titulo}
-            titulo = 'Home'
+            titulo = 'Sobre Mim'
             />
-        </View>
         <View style={styles.main}>
             <Image
             style={styles.perfil}
             source={require('../../assets/images/perfil-sobre.jpeg')}
             />
-            <Text>Bem-vindo(a) ao meu App</Text>
+            <Text style={styles.welcome}>Bem-vindo(a) ao meu App</Text>
+            <Text style={styles.descricao}>Sou uma luno de Desenvolvimento de Sistemas, temente a Deus e que ama viajar, por isso trouxe algumas de minhas experiências para esse App!</Text>
+            <FlatList
+                data={data}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => (
+                    <Link style={styles.link} href={item.link}>
+                        {item.titulo}
+                    </Link>
+                )}
+            />
         </View>
-        </>
-    )
+      </View>
+    </>
+  );
 }
 
 const styles = StyleSheet.create({
-    header:{
-        flex: 1,
-        alignItems: 'center',
-        backgroundColor: '#0479b3',
-        height: 50,
+    container: {
+        height: '100%'
     },
 
-    titulo: {
-        color: '#fff'
+    main:{
+      flex: 1,
+      alignItems: 'center',
+      marginTop: 30
     },
-
 
     perfil: {
-        width: 200,
-        height: 200,
-        borderRadius: '100%'
+      width: 200,
+      height: 200,
+      overflow: 'hidden',
+      borderRadius: parseInt('100%')
     },
 
-})
+    welcome:{
+      fontSize: 26,
+      fontWeight: 'bold',
+      marginTop: 10
+    },
 
+    descricao: {
+      textAlign: 'center',
+      margin: 10,
+      width: 305
+    },
+
+    link:{
+      backgroundColor: '#0479b3',
+      margin: 10,
+      padding: 5,
+      width: 300,
+      color: '#fff',
+      textAlign: 'center'
+    }
+  });
