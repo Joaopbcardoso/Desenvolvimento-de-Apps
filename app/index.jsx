@@ -10,6 +10,7 @@ export default function Home() {
         { id: '4', link: '/login/Login', titulo: 'Atividade do Login' },
         { id: '5', link: '/picker/Pokemon', titulo: 'App do Pokemón' },
         { id: '6', link: '/splash-screen/SplashScreen', titulo: 'Splash Screen Disney+' },
+        { id: '7', link: '/sobre-mim', titulo: 'Sobre mim' },
     ];
     
 
@@ -50,7 +51,9 @@ const styles = StyleSheet.create({
     },
     link:{
         margin: 20,
-        padding: 4,
-        borderColor: '#000'
+        padding: 40,
+        borderWidth: 1, 
+        fontSize: 20,
+        textAlign: "center"
     }
 });
