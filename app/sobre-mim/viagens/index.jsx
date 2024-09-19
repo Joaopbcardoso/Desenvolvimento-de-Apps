@@ -1,21 +1,44 @@
-import { FlatList, Image, Text } from "react-native"
+import { FlatList, Image, Text, StyleSheet } from 'react-native';
+import HeaderSobre from '../../../components/HeaderSobre';
 
-export default function Viagens(){
-    const data = [
-        { id: '1', link: '1.jpeg' },
-        { id: '2', link: '2.jpeg' }
-    ];
-    return(
-        <Text>Oi</Text>
-    //     <FlatList
-    //     data={data}
-    //     keyExtractor={(foto) => foto.id}
-    //     renderfoto={({ foto }) => (
-    //         <Image 
-    //         style={styles.link} 
-    //         source={require({foto.link})}>
-    //         </Image>
-    //     )}
-    // />
-    )
+const data = [
+  { id: '1', link: require('../../../assets/images/bc.jpeg') },
+  { id: '2', link: require('../../../assets/images/jeep.jpeg') },
+  { id: '3', link: require('../../../assets/images/trem.jpeg')},
+];
+
+export default function Viagens() {
+  return (
+    <>
+    <HeaderSobre
+    titulo = 'Viagens'
+    />
+    <FlatList
+      style={styles.flatList}
+      data={data}
+      keyExtractor={(item) => item.id} // Use item for consistency
+      renderItem={({ item }) => (
+        <Image
+          style={styles.image} // Use a more descriptive style name
+          source={item.link}
+        />
+      )}
+    />
+    </>
+  );
 }
+
+const styles = StyleSheet.create({
+
+  flatList:{
+    display: 'flex',
+    width: '100%',
+    
+  },
+
+  image: {
+    margin: 20,
+    width: 350,
+    height: 600
+  },
+});
