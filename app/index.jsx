@@ -11,6 +11,7 @@ export default function Home() {
         { id: '5', link: '/picker/Pokemon', titulo: 'App do Pokemón' },
         { id: '6', link: '/splash-screen/SplashScreen', titulo: 'Splash Screen Disney+' },
         { id: '7', link: '/sobre-mim', titulo: 'Sobre mim' },
+        { id: '8', link: '/ifome', titulo: 'iFome' },
     ];
     
 
