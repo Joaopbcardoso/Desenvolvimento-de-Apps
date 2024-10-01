@@ -12,6 +12,7 @@ export default function Home() {
         { id: '6', link: '/splash-screen/SplashScreen', titulo: 'Splash Screen Disney+' },
         { id: '7', link: '/sobre-mim', titulo: 'Sobre mim' },
         { id: '8', link: '/ifome', titulo: 'iFome' },
+        { id: '9', link: '/imagepicker', titulo: 'Imagem da Galeria' },
     ];
     
 
