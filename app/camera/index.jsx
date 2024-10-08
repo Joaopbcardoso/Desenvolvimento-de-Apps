@@ -1,87 +1,145 @@
 import { useState, useRef } from "react";
-import { View, StyleSheet, Image, Pressable, Text, Button } from "react-native";
+import { View, SafeAreaView, StyleSheet, Image, Pressable, Text, Button, Modal, Linking } from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
-import * as MediaLibrary from 'expo-media-library'; // Importa o módulo MediaLibrary
+import * as MediaLibrary from 'expo-media-library'; 
 
 export default function Camera() {
-    const [permissao, pedirPermissao] = useCameraPermissions();
-    const [mediaPermissao, pedirMediaPermissao] = MediaLibrary.usePermissions(); // Permissão para salvar mídia
-    const [foto, setFoto] = useState(null);
-    const [cameraType, setCameraType] = useState("back"); // Estado para definir o tipo de câmera (traseira ou frontal)
-    const cameraRef = useRef(null);
+  const [permissao, pedirPermissao] = useCameraPermissions();
+  const [mediaPermissao, pedirMediaPermissao] = MediaLibrary.usePermissions(); 
+  const [foto, setFoto] = useState(null);
+  const [ladoCamera, setLadoCamera] = useState("back");
+  const [modalVisible, setModalVisible] = useState(false); 
+  const [linkQRCode, setLinkQRCode] = useState(null); 
+  const cameraRef = useRef(null);
 
-    // Verifica permissão da câmera
-    if (!permissao) {
-        return <View></View>;
-    }
+  if (!permissao) {
+    return <View></View>;
+  }
 
-    // Solicita permissão para a câmera se não for concedida
-    if (!permissao.granted) {
-        return (
-            <View style={styles.container}>
-                <Text style={styles.textpermission}>Você precisa autorizar o aplicativo para utilizar a câmera</Text>
-                <Button title="Dar Permissão" onPress={pedirPermissao} />
-            </View>
-        );
-    }
-
-    // Solicita permissão para a galeria se não for concedida
-    if (!mediaPermissao?.granted) {
-        return (
-            <View style={styles.container}>
-                <Text style={styles.textpermission}>Você precisa autorizar o aplicativo para salvar fotos na galeria</Text>
-                <Button title="Dar Permissão para Galeria" onPress={pedirMediaPermissao} />
-            </View>
-        );
-    }
-
-    const tirarFoto = async () => {
-        const foto = await cameraRef.current?.takePictureAsync({
-            quality: 0.5,
-            base64: true
-        });
-        setFoto(foto);
-
-        // Salva a foto na galeria do dispositivo
-        const asset = await MediaLibrary.createAssetAsync(foto.uri);
-        MediaLibrary.createAlbumAsync('Camera', asset, false)
-            .then(() => {
-                console.log('Foto salva com sucesso!');
-            })
-            .catch((error) => {
-                console.log('Erro ao salvar a foto:', error);
-            });
-    };
-
-    const alternarCamera = () => {
-        setCameraType((prevCameraType) => (prevCameraType === "back" ? "front" : "back"));
-    };
-
+  if (!permissao.granted) {
     return (
-        <CameraView
-            facing={cameraType} // Usa o estado para controlar a câmera (traseira ou frontal)
-            style={styles.camera}
-            ref={cameraRef}
-        >
-            <View style={styles.buttonContainer}>
-                {/* Botão de alternar câmera (alinhado à esquerda) */}
-                <Pressable onPress={alternarCamera} style={styles.switchButton}>
-                    <Image
-                        source={require('../../assets/images/mudar-camera.png')}
-                        style={styles.switchImage}
-                    />
-                </Pressable>
-
-                {/* Botão para tirar foto (centralizado) */}
-                <Pressable onPress={tirarFoto} style={styles.cameraButtonContainer}>
-                    <Image
-                        source={require('../../assets/images/botao-camera.png')}
-                        style={styles.cameraButton}
-                    />
-                </Pressable>
-            </View>
-        </CameraView>
+      <View style={styles.container}>
+        <Text style={styles.textpermission}>Você precisa autorizar o aplicativo para utilizar a câmera</Text>
+        <Button title="Dar Permissão" onPress={pedirPermissao} />
+      </View>
     );
+  }
+
+  if (!mediaPermissao?.granted) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.textpermission}>Você precisa autorizar o aplicativo para salvar fotos na galeria</Text>
+        <Button title="Dar Permissão para Galeria" onPress={pedirMediaPermissao} />
+      </View>
+    );
+  }
+
+  const tirarFoto = async () => {
+    const foto = await cameraRef.current?.takePictureAsync({
+      quality: 0.5,
+      base64: true,
+    });
+    setFoto(foto);
+  };
+
+  const salvarFoto = async () => {
+    try {
+      const asset = await MediaLibrary.createAssetAsync(foto.uri);
+      await MediaLibrary.createAlbumAsync('Camera', asset, false);
+      console.log('Foto salva com sucesso!');
+      setFoto(null)
+    } catch (error) {
+      console.log('Erro ao salvar a foto:', error);
+    }
+  };
+
+  const inverterLadoCamera = () => {
+    setLadoCamera(ladoCamera === "back" ? "front" : "back");
+  };
+
+  const BarcodeScanningResult = (result) => {
+    console.log('Link encontrado:', result.data);
+    setLinkQRCode(result.data); 
+    setModalVisible(true); 
+  };
+
+  const navegarParaLink = async () => {
+    setModalVisible(false);
+    const supported = await Linking.canOpenURL(linkQRCode);
+  
+    if (supported) {
+      Linking.openURL(linkQRCode);  // Aqui você está realmente abrindo o link
+    } else {
+      console.log("Não é possível abrir o link:", linkQRCode);
+    }
+  };
+  
+
+  return (
+    <View style={styles.container}>
+      {foto ? 
+        <SafeAreaView style={styles.result}>
+          <Image style={styles.image} source={{ uri: foto.uri }} />
+          <View style={styles.options}>
+            <Pressable onPress={() => setFoto(null)} style={styles.switchButton}>
+              <Image
+                source={require('../../assets/images/delete.png')}
+                style={styles.optionicon}
+              />
+            </Pressable>
+            <Pressable onPress={salvarFoto} style={styles.cameraButtonContainer}>
+              <Image
+                source={require('../../assets/images/save.png')}
+                style={styles.optionicon}
+              />
+            </Pressable>
+          </View>
+        </SafeAreaView>
+      : 
+        <CameraView
+          facing={ladoCamera}
+          style={styles.camera}
+          ref={cameraRef}
+          onBarcodeScanned={BarcodeScanningResult}
+          barcodeScannerSettings={{
+            barcodeTypes: ["qr"],
+          }}
+        >
+          <View style={styles.buttonContainer}>
+            <Pressable onPress={inverterLadoCamera} style={styles.switchButton}>
+              <Image
+                source={require('../../assets/images/mudar-camera.png')}
+                style={styles.switchImage}
+              />
+            </Pressable>
+            <Pressable onPress={tirarFoto} style={styles.cameraButtonContainer}>
+              <Image
+                source={require('../../assets/images/botao-camera.png')}
+                style={styles.cameraButton}
+              />
+            </Pressable>
+          </View>
+        </CameraView>
+      }
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalText}>Você deseja navegar para o link:</Text>
+            <Text style={styles.modalLink}>{linkQRCode}</Text>
+            <View style={styles.modalButtons}>
+              <Button title="Não" onPress={() => setModalVisible(false)} />
+              <Button title="Sim" onPress={navegarParaLink} />
+            </View>
+          </View>
+        </View>
+      </Modal>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -100,10 +158,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     buttonContainer: {
-        flexDirection: 'row', // Coloca os botões em linha
-        width: '100%', // Faz o container ocupar toda a largura da tela
+        flexDirection: 'row', 
+        width: '100%', 
         alignItems: 'center',
-        justifyContent: 'space-between', // Alinha um botão à esquerda e outro no centro
+        justifyContent: 'space-between',
         paddingHorizontal: 20,
         marginBottom: 20,
     },
@@ -125,5 +183,58 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
         resizeMode: 'contain',
-    }
+    },
+    image:{
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+    },
+    result:{
+        flex:1,
+        justifyContent: "center",
+    },
+
+    options:{
+        backgroundColor: '#434343', 
+        flexDirection: 'row', 
+        width: '100%', 
+        height: 70,
+        alignItems: 'center',
+        justifyContent: 'space-around',
+    }, 
+
+    optionicon: {
+        marginHorizontal: 50,
+        alignItems: 'center',
+        resizeMode: 'contain',
+        width: 50,
+        height: 60
+    },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    width: 300,
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  modalText: {
+    marginBottom: 10,
+    fontSize: 18,
+  },
+  modalLink: {
+    fontSize: 16,
+    color: 'blue',
+    marginBottom: 20,
+  },
+  modalButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
 });
