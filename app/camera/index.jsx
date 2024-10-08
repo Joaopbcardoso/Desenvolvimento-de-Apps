@@ -4,12 +4,12 @@ import { CameraView, useCameraPermissions } from "expo-camera";
 import * as MediaLibrary from 'expo-media-library'; 
 
 export default function Camera() {
-  const [permissao, pedirPermissao] = useCameraPermissions();
-  const [mediaPermissao, pedirMediaPermissao] = MediaLibrary.usePermissions(); 
-  const [foto, setFoto] = useState(null);
-  const [ladoCamera, setLadoCamera] = useState("back");
-  const [modalVisible, setModalVisible] = useState(false); 
-  const [linkQRCode, setLinkQRCode] = useState(null); 
+  const [permissao, pedirPermissao] = useCameraPermissions(); // responsável por definir a permissão para o uso da camera
+  const [mediaPermissao, pedirMediaPermissao] = MediaLibrary.usePermissions(); //permissão para salvar foto no dispositivo
+  const [foto, setFoto] = useState(null); // definir a foto tirada
+  const [ladoCamera, setLadoCamera] = useState("back"); // definir a câmera padrão para a câmera traseira
+  const [modalVisible, setModalVisible] = useState(false); // define o estado da modal (inicialmente false)
+  const [linkQRCode, setLinkQRCode] = useState(null); // capta o link que o QRCode pegou
   const cameraRef = useRef(null);
 
   if (!permissao) {
