@@ -1,4 +1,4 @@
-import HeaderSobre from "../../components/HeaderSobre";
+import HeaderSobre from "../../components/Header";
 import { StyleSheet, Image, Text, View, FlatList } from "react-native";
 import { Link } from "expo-router";
 

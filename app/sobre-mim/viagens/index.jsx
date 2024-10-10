@@ -1,5 +1,5 @@
 import { FlatList, Image, Text, StyleSheet, View } from 'react-native';
-import HeaderSobre from '../../../components/HeaderSobre';
+import HeaderSobre from '../../../components/Header';
 
 const data = [
   { id: '1', link: require('../../../assets/images/bc.jpeg'), descricao: 'Bauneário Camburiú' },

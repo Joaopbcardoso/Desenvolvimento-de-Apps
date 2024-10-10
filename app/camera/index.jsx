@@ -38,6 +38,7 @@ export default function Camera() {
     const foto = await cameraRef.current?.takePictureAsync({
       quality: 0.5,
       base64: true,
+      silent: true 
     });
     setFoto(foto);
   };
@@ -101,6 +102,7 @@ export default function Camera() {
           style={styles.camera}
           ref={cameraRef}
           onBarcodeScanned={BarcodeScanningResult}
+          captureAudio={false}
           barcodeScannerSettings={{
             barcodeTypes: ["qr"],
           }}

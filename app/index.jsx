@@ -14,6 +14,7 @@ export default function Home() {
         { id: '8', link: '/ifome', titulo: 'iFome' },
         { id: '9', link: '/imagepicker', titulo: 'Imagem da Galeria' },
         { id: '10', link: '/camera', titulo: 'Camera' },
+        { id: '11', link: '/memorias', titulo: 'Memorias' },
     ];
     
 

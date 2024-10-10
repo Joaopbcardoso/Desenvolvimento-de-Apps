@@ -1,6 +1,6 @@
 import { Text, View, StyleSheet } from 'react-native';
 
-export default function HeaderSobre({ titulo }) {
+export default function Header({ titulo }) {
     return (
         <View style={styles.header}>
             <Text style={styles.titulo}>{titulo}</Text>
